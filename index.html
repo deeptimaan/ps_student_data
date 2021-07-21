@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html LANG=pt_BR /opt/google/chrome/chrome>
+<html>
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <title>PS CHANDPUR JOGITHER - NAWABGANJ(BAREILLY)</title>
 </head>
 
@@ -17,7 +15,7 @@
 
            </p>
        </header>
-       <form method="POST" autocomplete="off" name="google-sheet" id='survey-form'>
+       <form method="post" id="frmSubmit">
 <script>
 function copyTextValue10(selectedOption) {
 if(selectedOption.selectedIndex <= 0){
@@ -92,8 +90,8 @@ function maxLengthCheck(object)
   }
 </script>
            <div class='form-input'>
-               <label id='name-label'>STUDENT ADHAR NO</label>
-               <input oninput="maxLengthCheck(this)" type = "number" maxlength = "12" name="STUDENT ADHAR NO" id='name' placeholder='STUDENT ADHAR NO' class='form-input-size' required />
+               <label id='name-label'>Student Adhar No.</label>
+               <input oninput="maxLengthCheck(this)" type = "number" maxlength = "12" name="STUDENT ADHAR NO" id='name' placeholder='Student Adhar No.' class='form-input-size' required />
            </div>
            
            <div class='form-input'>
@@ -129,18 +127,18 @@ return;
 
 
            <div class='form-input'>
-               <label id='name-label'>FATHER'S NAME</label>
-               <input type='text' autocapitalize="characters" name="FATHER'S NAME" id='name' placeholder="FATHER'S NAME" class='form-input-size' required />
+               <label id='name-label'>Father's Name</label>
+               <input type='text' autocapitalize="characters" name="FATHER'S NAME" id='name' placeholder="Father's Name" class='form-input-size' required />
            </div>
 
            <div class='form-input'>
-               <label id='name-label'>MOTHER'S NAME</label>
-               <input type='text' autocapitalize="characters" name="MOTHER'S NAME" id='name' placeholder="MOTHER'S NAME" class='form-input-size' required />
+               <label id='name-label'>Mother's Name</label>
+               <input type='text' autocapitalize="characters" name="MOTHER'S NAME" id='name' placeholder="Mother's Name" class='form-input-size' required />
            </div>
 
            <div class='form-input'>
-               <label id='name-label'>OCCUPATION</label>
-               <input type = "text" autocapitalize="characters" name="OCCUPATION" id='name' placeholder='OCCUPATION' class='form-input-size' required />
+               <label id='name-label'>Occupation</label>
+               <input type = "text" autocapitalize="characters" name="OCCUPATION" id='name' placeholder='Occupation' class='form-input-size' required />
            </div>
 
            <script>
@@ -190,43 +188,50 @@ return;
            </div>
 
            <div class='form-input'>
-               <label id='name-label'>MOBILE NO</label>
-               <input oninput="maxLengthCheck(this)" type = "number" maxlength = "10" name="MOBILE NO" id='name' placeholder='MOBILE NO' class='form-input-size' required />
+               <label id='name-label'>Mobile No.</label>
+               <input oninput="maxLengthCheck(this)" type = "number" maxlength = "10" name="MOBILE NO" id='name' placeholder='Mobile No.' class='form-input-size' required />
            </div> 
 
            <div class='form-input'>
-               <label id='name-label'>ADDRESS</label>
-               <TEXTAREA autocapitalize="characters" name="ADDRESS" id='name' placeholder='ADDRESS' class='form-input-size' required /></TEXTAREA>
+               <label id='name-label'>Address</label>
+               <TEXTAREA autocapitalize="characters" name="ADDRESS" id='name' placeholder='Address' class='form-input-size' required /></TEXTAREA>
            </div>
 
 
 
            <div class='form-input'>
-               <input type="submit" id='myBtn' class="submitBtn" value="Submit"/>
+               <button type="submit" id="btnSubmit" class="submitBtn">Submit</button>
            </div>
+           <spam id="msg" style="margin-left: 45%;"></span>
        </form>
    </div>
 <script>
-            const scriptURL = 'https://script.google.com/macros/s/AKfycby314KDsaDj_96YK1LqDHq7WZubma6Ykz-hS_mYbSYsMVTYXOs/exec'
-            const form = document.forms['google-sheet']
-          
-            form.addEventListener('submit', e => {
-              e.preventDefault()
-              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => alert("Data Saved."))
-                .catch(error => console.error('Error!', error.message))
-                document.getElementById("survey-form").reset();
-            })
-          </script>
+	  jQuery('#frmSubmit').on('submit',function(e){
+		e.preventDefault();
+		jQuery('#msg').html('Please wait...');
+		jQuery('#btnSubmit').attr('disabled',true);
+		jQuery.ajax({
+			url:'https://script.google.com/macros/s/AKfycbzLP1BSidyvXsLBs-sSdqBkGaeIcXs8TP-aq8ZLklltw0qXRAS2fspF2aQ2SSO9r-IJjA/exec',
+			type:'post',
+			data:jQuery('#frmSubmit').serialize(),
+			success:function(result){
+				jQuery('#frmSubmit')[0].reset();
+				jQuery('#msg').html('');
+				alert("Data Saved.!!")
+				jQuery('#btnSubmit').attr('disabled',false);
+			}
+		});
+	  });
+	  </script>
 </body>
 </html>
 <style>
   html{
     font-size: 16px;
-}
+    }
 
 body{
-    background-color: rgba(2, 2, 2, 0.81);
+    background-color: rgba(0, 0, 0, 1);
     margin: 0;
     font-family: sans-serif;
     color: white;
@@ -263,8 +268,8 @@ h1{
   font-style: italic;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5)
 }
-#survey-form{
-   background: rgba(178, 5, 140, 0.82);
+#frmSubmit{
+   background: rgba(0, 0, 134, 0.83);
    padding: 2.3rem 0.5rem;
    border-radius: 0.3rem;
 }
@@ -307,7 +312,7 @@ textarea{
  padding: 0.5rem 0 0 0.5rem;
 }
 
-#myBtn{
+#btnSubmit{
  width: 100%;
  padding: 0.8rem;
  background: rgb(7, 173, 10);
