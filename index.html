@@ -1,13 +1,28 @@
+<!doctype html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-   <title>PS CHANDPUR JOGITHER - NAWABGANJ(BAREILLY)</title>
+    <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<title>PS CHANDPUR JOGITHER - NAWABGANJ(BAREILLY)</title>
+<style type="text/css">
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.75) url(loading2.gif) no-repeat center center;
+  z-index: 10000;
+}
+</style>
 </head>
-
 <body>
-   <div class="container">
+  <div class="container">
        <header>
            <h1 id='title'>PS CHANDPUR JOGITHER - NAWABGANJ(BAREILLY)</h1>
            <p id='description'>
@@ -15,8 +30,8 @@
 
            </p>
        </header>
-       <form method="get" id="frmSubmit">
-<script>
+       <form method="POST" autocomplete="off" name="google-sheet" id='survey-form'>
+        <script>
 function copyTextValue10(selectedOption) {
 if(selectedOption.selectedIndex <= 0){
 document.getElementById("destination").value = '';
@@ -119,9 +134,45 @@ return;
                </select>
            </div>
 
+                      <script>
+function copyTextValue00(selectedOption) {
+if(selectedOption.selectedIndex <= 0){
+document.getElementById("Birth State").value = '';
+return;
+}
+
+ var selectedOptionValue = selectedOption.value;
+ document.getElementById("Birth State").value = selectedOptionValue;
+}
+</script>  
+<input type="text" name="Birth State" id="Birth State" style="visibility:hidden;"> 
            <div class='form-input'>
-               <label id='name-label'>Nationality</label>
-               <input type='text' name="Nationality" autocapitalize="characters" placeholder="Nationality" class='form-input-size' required />
+               <p>Birth State</p>
+               <select onChange="copyTextValue00(this);" id='class' class='form-input-size' required>
+                   <option disabled selected value>--SELECT--</option>
+                   <option value="U.P.">U.P.</option>
+                   <option value="OTHER">OTHER</option>
+               </select>
+           </div>
+                      <script>
+function copyTextValue99(selectedOption) {
+if(selectedOption.selectedIndex <= 0){
+document.getElementById("Nationality").value = '';
+return;
+}
+
+ var selectedOptionValue = selectedOption.value;
+ document.getElementById("Nationality").value = selectedOptionValue;
+}
+</script>  
+<input type="text" name="Nationality" id="Nationality" style="visibility:hidden;"> 
+           <div class='form-input'>
+               <p>Nationality</p>
+               <select onChange="copyTextValue99(this);" id='class' class='form-input-size' required>
+                   <option disabled selected value>--SELECT--</option>
+                   <option value="INDIAN">INDIAN</option>
+                   <option value="OTHER">OTHER</option>
+               </select>
            </div>
 
 
@@ -197,41 +248,43 @@ return;
                <TEXTAREA autocapitalize="characters" name="ADDRESS" id='name' placeholder='Address' class='form-input-size' required /></TEXTAREA>
            </div>
 
-
-
            <div class='form-input'>
-               <button type="submit" id="btnSubmit" class="submitBtn">Submit</button>
+               <input type="submit" id='myBtn' class="submitBtn" value="Submit"/>
            </div>
-           <spam id="msg" style="margin-left: 45%;"></span>
-       </form>
-   </div>
+           <span id="show_data">
+           <a href="https://docs.google.com/spreadsheets/d/11eN_zhS0YLPaJIKbuV8mog4CY5rn4n4ZaLTvpIoD-c4/edit?usp=sharing" target="_blank">Show Data</a></span>
+</form>
+</div>
+<div id="loader"></div>
+<!-- INCLUDE "t2228.php:PHP" -->
+
+
 <script>
-	  jQuery('#frmSubmit').on('submit',function(e){
-		e.preventDefault();
-		jQuery('#msg').html('Please wait...');
-		jQuery('#btnSubmit').attr('disabled',true);
-		jQuery.ajax({
-			url:'https://script.google.com/macros/s/AKfycbzLP1BSidyvXsLBs-sSdqBkGaeIcXs8TP-aq8ZLklltw0qXRAS2fspF2aQ2SSO9r-IJjA/exec',
-			type:'post',
-			data:jQuery('#frmSubmit').serialize(),
-			success:function(result){
-				jQuery('#frmSubmit')[0].reset();
-				jQuery('#msg').html('');
-				alert("Data Saved.!!")
-				jQuery('#btnSubmit').attr('disabled',false);
-			}
-		});
-	  });
-	  </script>
+var spinner = $('#loader');
+$(function() {
+  $('form').submit(function(e) {
+    e.preventDefault();
+    spinner.show();
+    $.ajax({
+      url: 'https://script.google.com/macros/s/AKfycbzLP1BSidyvXsLBs-sSdqBkGaeIcXs8TP-aq8ZLklltw0qXRAS2fspF2aQ2SSO9r-IJjA/exec',
+      data: $(this).serialize(),
+      method: 'post',
+      dataType: 'JSON'
+    }).done(function(resp) {
+      spinner.hide();
+      alert("Data Saved");
+    });
+  });
+});
+</script>
 </body>
-</html>
 <style>
   html{
     font-size: 16px;
-    }
+}
 
 body{
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(220, 120, 7, 1);
     margin: 0;
     font-family: sans-serif;
     color: white;
@@ -268,8 +321,8 @@ h1{
   font-style: italic;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5)
 }
-#frmSubmit{
-   background: rgba(0, 0, 134, 0.83);
+#survey-form{
+   background: rgba(170, 0, 3, 0.86);
    padding: 2.3rem 0.5rem;
    border-radius: 0.3rem;
 }
@@ -286,7 +339,7 @@ h1{
    border-radius: 0.2rem;
    outline: 0;
    border-style: none;
-   margin-top: 0.4rem;  
+   margin-top: 0.4rem;
 }
 p{
  font-size: 1.12rem;
@@ -312,7 +365,7 @@ textarea{
  padding: 0.5rem 0 0 0.5rem;
 }
 
-#btnSubmit{
+#myBtn{
  width: 100%;
  padding: 0.8rem;
  background: rgb(7, 173, 10);
@@ -320,5 +373,15 @@ textarea{
  border-radius: 0.2rem;
  cursor: pointer;
  border: none;
+}
+#show_data{
+    background-color: white;
+     width: 100%;
+ padding: 0.8rem;
+ color: white;
+ border-radius: 0.2rem;
+ cursor: pointer;
+ border: none;
+ margin-left: 40%;
 }
 </style>
